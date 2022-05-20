@@ -1,0 +1,128 @@
+<ul *ngFor="let i of insectsInfo">
+    <li>
+        <p [ngStyle]="{'color': endangered == true ? 'red': 'black'}">
+            {{i.id}} : {{i.genus}} ({{i.order}})
+        </p>
+    </li>
+</ul>
+
+<!-- /**
+	 * If a leaf node is full. Split the ndoe.
+	 * Recieves node to be split as param.
+	 */// ******************************************************************************************************** delete()
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public BPTreeNode<TKey, TValue> delete(TKey key) {
+
+		BPTreeLeafNode target = (BPTreeLeafNode) getNode(key);
+		if (target == null) { // if key not in sequence set
+			return this;
+		}
+
+		// remove key from leafnode
+		removeFromLeaf(key, target);
+
+		// if node has underflow
+		if (target.getKeyCount() < m / 2 - 1) {
+			BPTreeLeafNode left = (BPTreeLeafNode) target.leftSibling;
+			BPTreeInnerNode parent = (BPTreeInnerNode) target.parentNode;
+			BPTreeLeafNode right = (BPTreeLeafNode) target.rightSibling;
+
+			if (target.leftSibling != null) {
+				if (target.leftSibling.getKeyCount() > m / 2 - 1) {
+					for (int i = target.getKeyCount(); i > 0; i--) {
+						target.setKey(i, target.getKey(i - 1));
+						target.setValue(i, target.getValue(i - 1));
+					}
+					target.setKey(0, target.leftSibling.getKey(target.leftSibling.getKeyCount() - 1));
+					target.setValue(0, left.getValue(target.leftSibling.getKeyCount() - 1));
+					target.keyTally++;
+
+					for (int k = 0; k < parent.getKeyCount(); k++) {
+						if (parent.getKey(k).equals(key)) {
+							parent.setKey(k, left.getKey(target.leftSibling.getKeyCount() - 1));
+							break;
+						}
+					}
+
+					target.leftSibling.keyTally--;
+					return this;
+				}
+
+				for (int i = 0; i < right.getKeyCount(); i++) {
+					left.setKey(left.getKeyCount(), right.getKey(i));
+					left.keyTally++;
+				}
+
+				for (int i = 0; i < parent.getKeyCount(); i++) {
+					if (parent.getKey(i).equals(key)) {
+						for (int j = i; j < parent.getKeyCount(); j++) {
+							parent.setKey(j, parent.getKey(j + 1));
+							parent.setChild(j, parent.getChild(j + 1));
+						}
+						parent.keyTally--;
+					}
+				}
+				return parent;
+			} else if (target.rightSibling != null) {
+				if (target.rightSibling.getKeyCount() > m / 2 - 1) {
+
+					target.setKey(target.getKeyCount(), target.rightSibling.getKey(0));
+					target.setValue(target.getKeyCount(), right.getValue(0));
+					target.keyTally++;
+
+					for (int i = 0; i < target.getKeyCount(); i++) {
+						target.rightSibling.setKey(i, target.rightSibling.getKey(i + 1));
+					}
+					target.rightSibling.keyTally--;
+
+					for (int i = 0; i < parent.getKeyCount(); i++) {
+						if (parent.getKey(i).equals(key)) {
+							parent.setKey(i + 1, target.rightSibling.getKey(0));
+							break;
+						}
+					}
+
+					return this;
+				}
+
+				for (int i = 0; i < target.getKeyCount(); i++) {
+					right.setKey(target.getKeyCount() + i, right.getKey(i));
+				}
+
+				for (int i = 0; i < target.getKeyCount(); i++) {
+					right.setKey(i, target.getKey(i));
+					right.keyTally++;
+				}
+
+				for (int i = 0; i < parent.getKeyCount(); i++) {
+					if (parent.getKey(i).equals(key)) {
+						for (int j = i; j < parent.getKeyCount(); j++) {
+							parent.setKey(j, parent.getKey(j + 1));
+							parent.setChild(j, parent.getChild(j + 1));
+						}
+						parent.keyTally--;
+					}
+				}
+				return parent;
+
+			}
+
+		}
+		return this;
+	}
+
+	/**
+	 * Remove passed in key from the sequence set.
+	 */// ******************************************************************************************************** removeFromLeaf()
+	public void removeFromLeaf(TKey key, BPTreeLeafNode<TKey, TValue> target) {
+		for (int i = 0; i < target.getKeyCount(); i++) {
+			if (target.getKey(i).equals(key)) {
+				for (int j = i; j < target.getKeyCount(); j++) {
+					target.setKey(j, target.getKey(j + 1));
+					target.setValue(j, target.getValue(j + 1));
+				}
+				target.keyTally--;
+				break;
+			}
+		}
+	} -->
