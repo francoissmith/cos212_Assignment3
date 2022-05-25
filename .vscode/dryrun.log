@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/francoissmith/Desktop/Ass3_Student_Files'
-make: Leaving directory `/Users/francoissmith/Desktop/Ass3_Student_Files'
- 
-make: *** No targets specified and no makefile found.  Stop.
-
