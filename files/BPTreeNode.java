@@ -140,9 +140,16 @@ abstract class BPTreeNode<TKey extends Comparable<TKey>, TValue> {
 	 * the
 	 * changed tree should be returned.
 	 *///******************************************************************************************************** insert()
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public BPTreeNode<TKey, TValue> insert(TKey key, TValue value) {
 		// Your code goes here
-		return this;
+		if (this.isLeaf()) {
+			BPTreeLeafNode ptr = (BPTreeLeafNode)this;
+			return ptr.insert(key, value);
+		}
+		else {
+			return this;
+		}
 	}
 
 	/**

@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Wed May 18 11:38:27 2022
+# Make data base, printed on Wed May 25 12:51:50 2022
 
 # Variables
 
@@ -38,13 +38,11 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/cv/lh0p43cx7ydgvcnl1___sr4h0000gn/T/vscode-ipc-aa176d7c-f074-4a79-ac69-4179e846d393.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/cv/lh0p43cx7ydgvcnl1___sr4h0000gn/T/vscode-ipc-ed73dbee-b8a7-41ea-90e5-b8edbad0ce2a.sock
 # environment
 VSCODE_CWD = /
 # environment
 PATH = /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
-# environment
-LaunchInstanceID = C1135E42-4B7B-458E-91F3-43024AA90B51
 # environment
 VSCODE_LOG_STACK = false
 # environment
@@ -68,7 +66,7 @@ HOME = /Users/francoissmith
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/francoissmith/Library/Application Support/Code/CachedData/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+VSCODE_CODE_CACHE_PATH = /Users/francoissmith/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
 # environment
 LOGNAME = francoissmith
 # environment
@@ -102,7 +100,7 @@ TMPDIR = /var/folders/cv/lh0p43cx7ydgvcnl1___sr4h0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/francoissmith/Library/Application Support/Code/1.67.1-main.sock
+VSCODE_IPC_HOOK = /Users/francoissmith/Library/Application Support/Code/1.67.2-main.sock
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -110,7 +108,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.20407204.20407210
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.20924011.20924017
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -125,8 +123,6 @@ MAKEFILES :=
 <F = $(notdir $<)
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 186a3
 # automatic
 ^F = $(notdir $^)
 # default
@@ -138,9 +134,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 405
+VSCODE_PID = 9139
 # variable set hash-table stats:
-# Load=64/1024=6%, Rehash=0, Collisions=1/85=1%
+# Load=62/1024=6%, Rehash=0, Collisions=1/83=1%
 
 # Pattern-specific Variable Values
 
@@ -148,9 +144,9 @@ VSCODE_PID = 405
 
 # Directories
 
-# . (device 16777220, inode 20600805): 6 files, no impossibilities.
+# . (device 16777220, inode 20600805): 9 files, no impossibilities.
 
-# 6 files, no impossibilities in 1 directories.
+# 9 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -222,7 +218,7 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Wed May 18 11:38:27 2022
+# Finished Make data base on Wed May 25 12:51:50 2022
 
  
 make: *** No rule to make target `all'.  Stop.

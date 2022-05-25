@@ -49,15 +49,13 @@ class BPTreeInnerNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<
 		BPTreeLeafNode targetLeaf = (BPTreeLeafNode<TKey, TValue>) ptr.getChild(insertIndex);
 		BPTreeNode targetNode = targetLeaf.insert(key, value);
 
-		if (targetNode != targetLeaf) {
-			if (targetNode.getKeyCount() == m) {
-				targetNode = split((BPTreeInnerNode<TKey, TValue>) targetNode);
-			}
-			while (targetNode.getParent() != null) {
-				targetNode = targetNode.getParent();
-			}
-			return targetNode;
-		} else return this;
+		if (targetNode.getKeyCount() == m) {
+			targetNode = split((BPTreeInnerNode<TKey, TValue>) targetNode);
+		}
+		while (targetNode.getParent() != null) {
+			targetNode = targetNode.getParent();
+		}
+		return targetNode;
 	}
 	/**
 	 * insert()'s helper function to traverse the tree and find target node.
@@ -67,13 +65,16 @@ class BPTreeInnerNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<
 		BPTreeInnerNode ptr = node;
 		Boolean found = false;
 		while (!found) { // traverse tree 
-			for (int i = 0; i < getKeyCount(); i++) { // iterate through keys
-				if (getKey(i).compareTo(key) > 0) {
+			for (int i = 0; i < ptr.getKeyCount(); i++) { // iterate through keys
+				// System.out.println(key + ":" + ptr.getKey(i));
+				if (ptr.getKey(i).compareTo(key) > 0) {
 					if (ptr.getChild(i).isLeaf()) { // if ptr's child is a leaf: found insert location
 						insertIndex = i;
 						found = true;
+						break;
 					} else { // else traverse further down the tree
 						ptr = (BPTreeInnerNode) ptr.getChild(i);
+						i=-1;
 					}
 				}
 
@@ -81,8 +82,10 @@ class BPTreeInnerNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<
 					if (ptr.getChild(i + 1).isLeaf()) {// if ptr's child is a leaf: found insert location
 						insertIndex = i + 1;
 						found = true;
+						break;
 					} else { // else traverse further down the tree
 						ptr = (BPTreeInnerNode<TKey, TValue>) ptr.getChild(i + 1);
+						i=-1;
 					}
 				}
 			}
@@ -170,50 +173,53 @@ class BPTreeInnerNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<
 		return inner;
 	}
 
+	// TODO: Fix delete
+
 	/**
 	 * Delete the passed in key from the tree;
 	 */// ******************************************************************************************************** delete()
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public BPTreeNode<TKey, TValue> delete(TKey key) {
-
 		BPTreeLeafNode target = (BPTreeLeafNode) getNode(key);
-		if (target == null) { // if key not in sequence set
-			return this;
-		}
+		
+		if (target != null) {
+			removeFromLeaf(key, target);
 
-		// remove key from leafnode
-		removeFromLeaf(key, target);
+			int minRequirement = m / 2; 
 
-		int minRequirement = m / 2 - 1; 
-
-		// if node has underflow
-		if (target.getKeyCount() < minRequirement) {
-			BPTreeLeafNode left = (BPTreeLeafNode) target.leftSibling;
-			BPTreeInnerNode parent = (BPTreeInnerNode) target.parentNode;
-			BPTreeLeafNode right = (BPTreeLeafNode) target.rightSibling;
-
-			if (target.leftSibling != null) {
-				if (target.leftSibling.getKeyCount() > minRequirement) { // if left has extra
-					stealFromLeft(target, left, parent, key);
+			while (true) {
+				if (target.getKeyCount() >= minRequirement) {
 					return this;
 				}
-			}  
-			
-			if (target.rightSibling != null) {
-				if (target.rightSibling.getKeyCount() > minRequirement) {
-					stealFromRight(target, right, parent, key);
-					return this;
-				}
-			}
+				else if(target.getKeyCount() < minRequirement) {
+					BPTreeLeafNode left = (BPTreeLeafNode) target.leftSibling;
+					BPTreeInnerNode parent = (BPTreeInnerNode) target.parentNode;
+					BPTreeLeafNode right = (BPTreeLeafNode) target.rightSibling;
 
-			if (target.leftSibling != null) {
-				merge(target, left, right, parent, key, true);
-				return parent;
-			} else if (target.rightSibling != null){
-				merge(target, left, right, parent, key, false);
-				return parent;
+					if(target.leftSibling != null) {
+						if(target.leftSibling.getKeyCount() > minRequirement) {
+							stealFromLeft(target, left, parent, key);
+							return this;
+						}
+					}
+
+					if (target.rightSibling != null) {
+						if (target.rightSibling.getKeyCount() >= minRequirement) {
+							stealFromRight(target, right, parent, key);
+							return this;
+						}
+					}
+
+					if (target.parentNode != null) {
+						if (target.parentNode.getKeyCount() > 1) {
+							
+							return this;
+						}
+					}
+				} 
 			}
 		}
+
 		return this;
 	}
 
@@ -323,6 +329,7 @@ class BPTreeInnerNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<
 				keyTally++;
 				return i;
 			}
+			
 			if (i + 1 == getKeyCount()) {
 				setKey(i + 1, key);
 				keyTally++;

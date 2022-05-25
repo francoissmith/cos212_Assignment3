@@ -51,8 +51,7 @@ class BPTreeLeafNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<T
 			} 
 			else { // else find where to insert
 				int i = 0;
-				boolean insert = false;
-				while (!insert && i < getKeyCount()) { // iterate through keys
+				while (i < getKeyCount()) { // iterate through keys
 					if (getKey(i).compareTo(key) > 0) {
 						for (int j = getKeyCount(); j > i; j--) {
 							setKey(j, getKey(j-1));
@@ -61,21 +60,21 @@ class BPTreeLeafNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<T
 						setKey(i, key);
 						setValue(i, value);
 						this.keyTally++;
-						insert = true;
+						break;
 					}
 
 					if (i+1 == getKeyCount()) { // new key is greatest value in list
 						setKey(i+1, key);
 						setValue(i+1, value);
 						this.keyTally++;
-						insert = true;
+						break;
 					}
 					i++;
 				}
 			}
 		}
-		
-		if ( getKeyCount() == m) {
+		// this.print(this);
+		if (getKeyCount() == m) {
 			BPTreeInnerNode<TKey, TValue> splitNode = split(this);
 			return splitNode;
 		}
@@ -95,7 +94,7 @@ class BPTreeLeafNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<T
 		BPTreeLeafNode right= new BPTreeLeafNode(node.m);
 		BPTreeInnerNode inner = new BPTreeInnerNode(node.m);
 		int splitKeysAt = node.getKeyCount()/2; // the halfway index of old node's key set
-
+		
 		if (node.parentNode != null){ // if node has parent update parent node
 			BPTreeInnerNode par = (BPTreeInnerNode)node.parentNode;
 			splitIndex = par.moveKeyUp(node.getKey(splitKeysAt));
@@ -155,6 +154,8 @@ class BPTreeLeafNode<TKey extends Comparable<TKey>, TValue> extends BPTreeNode<T
 
 		return inner;
 	}
+
+	// TODO: Fix delete
 
 	/**
 	 * Delete a key from the sequence set.
